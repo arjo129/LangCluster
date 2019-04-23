@@ -1,2 +1,3 @@
-api_keys/*
-venv/*
+api_keys/
+venv/
+__pycache__/

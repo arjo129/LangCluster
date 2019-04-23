@@ -1,0 +1,26 @@
+{
+  "de": {
+    "name": "German",
+    "regions": ["DE"],
+    "provider": "ms",
+    "stopwords": ["der", "das"]
+  },
+  "es": {
+    "name": "Spanish",
+    "regions": ["DE"],
+    "provider": "ms",
+    "stopwords": ["el", "la"]
+  },
+  "ja":{
+    "name": "Japanese",
+    "regions": ["JP"],
+    "provider": "ms",
+    "transliterate":"ms"
+  },
+  "ru":{
+    "name": "Russian",
+    "regions": ["RU"],
+    "provider": "ms",
+    "transliterate":"cyr"
+  }
+}

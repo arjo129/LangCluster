@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8" />
+    <style>
+    .counties {
+      fill: none;
+    }
+    .states {
+      fill: none;
+      stroke: #fff;
+      stroke-linejoin: round;
+    }
+    </style>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://d3js.org/topojson.v2.min.js"></script>
+    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+
+</head>
+<body>
+<svg width="960" height="600"></svg>
+<canvas width="960" height="600"></canvas>
+<script>
+
+    // Datasets
+    // FIP codes
+    // https://www2.census.gov/geo/docs/reference/codes/files/national_county.txt
+    // https://en.wikipedia.org/wiki/Federal_Information_Processing_Standard_state_code
+    //
+    // Unemployment rates
+    // https://www.bls.gov/lau/#tables
+
+    // https://bl.ocks.org/mbostock/4060606
+    var svg = d3.select("svg"),
+        width = +svg.attr("width"),
+        height = +svg.attr("height");
+
+    var path = d3.geoPath();
+
+    var unemployment = d3.map();
+
+    var x = d3.scaleLinear()
+        .domain([1, 10])
+        .rangeRound([600, 860]);
+
+    var color = d3.scaleThreshold()
+        .domain(d3.range(2, 10))
+        .range(d3.schemeBlues[9]);
+
+    // Create element for legend
+    var g = svg.append("g")
+        .attr("class", "key")
+        .attr("transform", "translate(0,40)");
+
+    d3.queue()
+        .defer(d3.json, "map.json")
+        // .defer(d3.tsv, "unemployment.tsv", function(d) { unemployment.set(d.id, +d.rate); })
+        //.defer(d3.tsv, "unemployment-states.tsv", function(d) { unemployment.set(d.id, +d.rate); })
+        .await(ready);
+
+    function ready(error, map) {
+      if (error) throw error;
+      console.log(map);
+      console.log(topojson.feature(
+                map,
+                map.objects["out"]))
+      svg.append("g")
+      .attr("class", "counties")
+    .selectAll("path")
+    // .data(topojson.feature(us, us.objects.counties).features)
+    .datum(topojson.feature(
+                map,
+                map.objects["out"]))
+    .enter().append("path")
+      .attr("fill", function(d) {
+        // console.log(d);
+        return color(d.rate = unemployment.get(d.id));
+      })
+      .attr("d", path)
+
+    }
+
+    </script>
+</body>

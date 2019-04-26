@@ -11,7 +11,7 @@
       stroke-linejoin: round;
     }
     </style>
-    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
     <script src="https://d3js.org/topojson.v2.min.js"></script>
     <script src="https://d3js.org/d3-array.v1.min.js"></script>
     <script src="https://d3js.org/d3-geo.v1.min.js"></script>
@@ -23,26 +23,31 @@
 <script>
     var svg = d3.select("svg");
     svg.attr("preserveAspectRatio", "xMinYMin meet");
-    svg.attr("width" ,window.innerWidth);
-    svg.attr("height" ,window.innerHeight);
+    svg.attr("width", window.innerWidth);
+    svg.attr("height", window.innerHeight);
 
+    var files = ["/api/backend", "map.json"];
 
-    d3.queue()
-        .defer(d3.json, "/api/backend")
-        .defer(d3.json, "map.json")
-        .awaitAll(function(error, files) {
-            ready(error, files[0], files[1]);
-        });
+    Promise.all(files.map(url => d3.json(url))).then(function(files) {
+        ready(files[0], files[1])
+    });
 
     function cluster_to_colorscheme(cluster){
-        for(key in cluster){
+        var max_id = -1;
+        for(var key in cluster){
+            max_id = Math.max(cluster[key], max_id);
+        }
+        var color_scheme = {}
+        for(var key in cluster){
+            var colIndex = (cluster[key]+1)/(max_id+1);
+            color_scheme[key] = d3.color(d3.interpolateRainbow(colIndex)).hex();
 
         }
-
+        return color_scheme;
     }
 
-    function ready(error, clusters, map) {
-      if (error) throw error;
+    function ready( clusters, map) {
+
 
       var projection = d3.geoEqualEarth();
       var outlines =  topojson.feature(
@@ -52,15 +57,18 @@
                 map,
                 map.objects["out"]));
       var path = d3.geoPath(projection);
+      clusters = cluster_to_colorscheme(clusters);
 
       for(var feature in outlines){
         var state = outlines[feature].properties["iso_3166_2"];
         var fill = "#CCC";
         if(state in clusters){
-            fill = "#F00";
+            fill = clusters[state];
         } else {
-            if(state.split("-")[0] in clusters){
-                fill = "#F00";
+            var country_code =state.split("-")[0]
+            if(country_code in clusters){
+                fill = clusters[country_code];
+                console.log(fill)
             }
         }
         svg.append("path")

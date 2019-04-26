@@ -13,27 +13,35 @@
     </style>
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <script src="https://d3js.org/topojson.v2.min.js"></script>
-<script src="https://d3js.org/d3-array.v1.min.js"></script>
-<script src="https://d3js.org/d3-geo.v1.min.js"></script>
+    <script src="https://d3js.org/d3-array.v1.min.js"></script>
+    <script src="https://d3js.org/d3-geo.v1.min.js"></script>
 </head>
 <body>
+
 <svg width="960" height="600"></svg>
+
 <script>
     var svg = d3.select("svg");
     svg.attr("preserveAspectRatio", "xMinYMin meet");
-
     svg.attr("width" ,window.innerWidth);
     svg.attr("height" ,window.innerHeight);
 
 
-
     d3.queue()
+        .defer(d3.json, "/api/backend")
         .defer(d3.json, "map.json")
-        // .defer(d3.tsv, "unemployment.tsv", function(d) { unemployment.set(d.id, +d.rate); })
-        //.defer(d3.tsv, "unemployment-states.tsv", function(d) { unemployment.set(d.id, +d.rate); })
-        .await(ready);
+        .awaitAll(function(error, files) {
+            ready(error, files[0], files[1]);
+        });
 
-    function ready(error, map) {
+    function cluster_to_colorscheme(cluster){
+        for(key in cluster){
+
+        }
+
+    }
+
+    function ready(error, clusters, map) {
       if (error) throw error;
 
       var projection = d3.geoEqualEarth();
@@ -46,9 +54,17 @@
       var path = d3.geoPath(projection);
 
       for(var feature in outlines){
-        console.log(outlines[feature].properties);
+        var state = outlines[feature].properties["iso_3166_2"];
+        var fill = "#CCC";
+        if(state in clusters){
+            fill = "#F00";
+        } else {
+            if(state.split("-")[0] in clusters){
+                fill = "#F00";
+            }
+        }
         svg.append("path")
-            .attr("fill", "#F00")
+            .attr("fill", fill)
             .attr("d", path(outlines[feature]));
 
       }

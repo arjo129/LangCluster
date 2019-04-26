@@ -3,13 +3,20 @@
     "name": "German",
     "regions": ["DE"],
     "provider": "ms",
-    "stopwords": ["der", "das"]
+    "stopwords": ["der", "das"],
+    "accents": true
+  },
+  "en": {
+    "name": "English",
+    "regions": ["GB"],
+    "provider": null
   },
   "es": {
     "name": "Spanish",
-    "regions": ["DE"],
+    "regions": ["ES"],
     "provider": "ms",
-    "stopwords": ["el", "la"]
+    "stopwords": ["el", "la"],
+    "accents": true
   },
   "ja":{
     "name": "Japanese",
@@ -22,5 +29,12 @@
     "regions": ["RU"],
     "provider": "ms",
     "transliterate":"cyr"
+  },
+  "zh-Hans": {
+    "name": "Mandarin",
+    "regions": ["CN", "TW"],
+    "provider": "ms",
+    "transliterate":"ms",
+    "accents": true
   }
 }

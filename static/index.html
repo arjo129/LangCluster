@@ -43,10 +43,11 @@
             color_scheme[key] = d3.color(d3.interpolateRainbow(colIndex)).hex();
 
         }
+        console.log(color_scheme)
         return color_scheme;
     }
 
-    function ready( clusters, map) {
+    function ready(clusters, map) {
 
 
       var projection = d3.geoEqualEarth();
@@ -68,7 +69,6 @@
             var country_code =state.split("-")[0]
             if(country_code in clusters){
                 fill = clusters[country_code];
-                console.log(fill)
             }
         }
         svg.append("path")

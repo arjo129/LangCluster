@@ -114,8 +114,8 @@ def soundex_and_levenstein(word1, word2):
             if i != None and j != None:
                 dist_meta = get_levenshtein_distance(i,j)
                 dist = min(dist_meta, dist)
-    dist_lv = get_levenshtein_distance(word1, word2)
-    return min(dist, dist_lv)
+    #dist_lv = get_levenshtein_distance(word1, word2)
+    return dist
 
 def translate_all_backends(word):
     translations = MSBackend.get_translation(word)
@@ -125,8 +125,11 @@ def translate_all_backends(word):
         cleaned[language] = post_process(translations[language], language)
     return cleaned
 
+def proportional_edit_distance(word1, word2):
+    ed = get_levenshtein_distance(word1, word2)
+    return 20*ed/(len(word1)+len(word2))
 
-def generate_edit_matrix(word, distance_metric=get_levenshtein_distance):
+def generate_edit_matrix(word, distance_metric=proportional_edit_distance):
     translations = translate_all_backends(word)
     translations["en"] = word
     lang_order = []
@@ -149,7 +152,7 @@ def generate_edit_matrix(word, distance_metric=get_levenshtein_distance):
 def cluster_matrix(distance_matrix):
     best_score = 0
     best_res = []
-    for i in range(1, 3):
+    for i in range(1, 7):
         dbscan = DBSCAN(eps=i, min_samples=2, metric="precomputed")
         res = dbscan.fit_predict(distance_matrix)
         score = max(res) / len(list(filter(lambda x: x == -1, res)))

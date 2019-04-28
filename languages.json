@@ -4,7 +4,8 @@
     "regions": ["SA","AE"],
     "provider": "ms",
     "transliterate":"ms",
-    "accents": true
+    "accents": true,
+    "stopwords-arabic": true
   },
   "bn": {
     "name": "Bengali",
@@ -29,21 +30,21 @@
     "name": "Danish",
     "regions": ["DK"],
     "provider": "ms",
-    "stopwords": ["der", "das"],
+    "stopwords": ["der", "das", "die"],
     "accents": true
   },
   "de": {
     "name": "German",
     "regions": ["DE"],
     "provider": "ms",
-    "stopwords": ["der", "das"],
+    "stopwords": ["der", "das", "die"],
     "accents": true
   },
   "el": {
     "name": "Greek",
     "regions": ["GR"],
     "provider": "ms",
-    "transliterate":"cyr"
+    "transliterate":"trans"
   },
   "en": {
     "name": "English",
@@ -217,7 +218,7 @@
   },
   "sl": {
     "name": "Slovenia",
-    "regions": ["SL"],
+    "regions": ["SI"],
     "provider": "ms",
     "accents": true
   },
@@ -278,22 +279,17 @@
     "provider": "ms",
     "accents": true
   },
-  "ty": {
-    "name": "Tahitian",
-    "regions": ["RO"],
-    "provider": "ms",
-    "accents": true
-  },
   "uk":{
     "name": "Ukranian",
     "regions": ["UA"],
     "provider": "ms",
-    "transliterate":"cyr"
+    "transliterate":"trans"
   },
   "vi":{
     "name": "Vietnam",
     "regions": ["VN"],
-    "provider": "ms"
+    "provider": "ms",
+    "accents": true
   },
   "zh-Hans": {
     "name": "Mandarin",

@@ -15,67 +15,153 @@
     <script src="https://d3js.org/topojson.v2.min.js"></script>
     <script src="https://d3js.org/d3-array.v1.min.js"></script>
     <script src="https://d3js.org/d3-geo.v1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.9.1/d3-tip.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
 
-<svg width="960" height="600"></svg>
-
+<form id="searchbar" height="40px">
+    <label>Word:</label><input type="text" name="word" id="query"/>
+    <input type="submit" value="Submit">
+</form>
+<center>
+    <svg width="960" height="600"></svg>
+</center>
+<div id="description" style="position: fixed; bottom:10px; left: 10px;">
+</div>
+<div id="modal" style="position: fixed; top:10%; left: 10%; height: 80%; width: 80%;  padding: 5px">
+    <h1>Welcome To LangCluster</h1>
+    <p> LangCluster is a tool which allows you to explore the relationship between words in various languages.
+        As of now around 30+ languages from different parts of the world are supported.
+    </p>
+    <form>
+        <input type="text" name="word" value="Enter an english word"/>
+        <input type="submit" value="Search">
+    </form>
+    <p>Suggestions: Try the words <a href="index.html?word=tea">Tea</a>, <a href="index.html?word=king">King</a>
+        or <a href="index.html?word=cheese">Cheese</a> to see the similarities between what different cultures call them.
+</div>
 <script>
-    var svg = d3.select("svg");
+    let data = null;
+    let mapPath = null;
+    let margin = 90;
+    let query = document.getElementById("query");
+    let word = "";
+
+    try {
+        word = getQueryVariable("word");
+        document.getElementById("modal").style.visibility = "hidden";
+        query.value = word;
+        fetchRelevantData(word);
+    } catch (e) {
+        //No input for word. Give tutorial Instead
+        document.getElementById("searchbar").style.visibility = "hidden";
+    }
+
+
+    let svg = d3.select("svg");
     svg.attr("preserveAspectRatio", "xMinYMin meet");
-    svg.attr("width", window.innerWidth);
-    svg.attr("height", window.innerHeight);
+    svg.attr("viewBox", "0 0 960 600");
+    handleResize();
 
-    var files = ["/api/backend", "map.json"];
+    function getQueryVariable(variable) {
+        let query = window.location.search.substring(1);
+        let vars = query.split('&');
+        for (let i = 0; i < vars.length; i++) {
+            let pair = vars[i].split('=');
+            if (decodeURIComponent(pair[0]) == variable) {
+                return decodeURIComponent(pair[1]);
+            }
+        }
+        throw new Exception();
+    }
 
-    Promise.all(files.map(url => d3.json(url))).then(function(files) {
-        ready(files[0], files[1])
-    });
+
+    function fetchRelevantData(word) {
+        let files = ["/api/backend?word=" + word, "map.json"];
+
+        Promise.all(files.map(url => d3.json(url))).then(function (files) {
+            window.onresize = handleResize;
+            data = files[0];
+            mapPath = files[1];
+            renderMap(data, mapPath);
+        });
+    }
+
+    function handleResize(){
+        if(window.innerWidth > window.innerHeight) {
+            svg.attr("viewBox", "0 0 "+window.innerWidth+" "+window.innerHeight);
+            svg.attr("width", window.innerWidth);
+            svg.attr("height", "auto");
+        } else {
+            svg.attr("viewBox", "400 0 960 600");
+            svg.attr("height",  window.innerHeight - margin);
+            svg.attr("width", "auto");
+        }
+        svg.selectAll("*").remove();
+        renderMap(data, mapPath);
+    }
+
+    function getPlatformProjection(){
+        if(window.innerWidth > window.innerHeight) {
+            return [window.innerWidth, window.innerHeight];
+        } else {
+            return [960, 600];
+        }
+    }
 
     function cluster_to_colorscheme(cluster){
-        var max_id = -1;
-        for(var key in cluster){
-            max_id = Math.max(cluster[key], max_id);
+        console.log(cluster);
+        let max_id = -1;
+        for(let key in cluster){
+            max_id = Math.max(cluster[key]["group"], max_id);
         }
-        var color_scheme = {}
-        for(var key in cluster){
-            var colIndex = (cluster[key]+1)/(max_id+1);
+        let color_scheme = {};
+        for(let key in cluster){
+            let colIndex = (cluster[key]["group"]+1)/(max_id+1);
             color_scheme[key] = d3.color(d3.interpolateRainbow(colIndex)).hex();
-
         }
         console.log(color_scheme)
         return color_scheme;
     }
 
-    function ready(clusters, map) {
+    function renderMap(clusters, map) {
 
+        let projection = d3.geoEqualEarth();
+        let outlines =  topojson.feature(map, map.objects["out"]).features;
 
-      var projection = d3.geoEqualEarth();
-      var outlines =  topojson.feature(
-                map,
-                map.objects["out"]).features;
-      projection.fitSize([window.innerWidth, window.innerHeight], topojson.feature(
-                map,
-                map.objects["out"]));
-      var path = d3.geoPath(projection);
-      clusters = cluster_to_colorscheme(clusters);
+        projection.fitSize(getPlatformProjection(), topojson.feature(map, map.objects["out"]));
+        let path = d3.geoPath(projection);
+        clusters = cluster_to_colorscheme(clusters);
 
-      for(var feature in outlines){
-        var state = outlines[feature].properties["iso_3166_2"];
-        var fill = "#CCC";
-        if(state in clusters){
-            fill = clusters[state];
-        } else {
-            var country_code =state.split("-")[0]
-            if(country_code in clusters){
-                fill = clusters[country_code];
+        for(let feature in outlines){
+
+            let state = outlines[feature].properties["iso_3166_2"];
+            let fill = "#CCC";
+            let used_info = state;
+            if(state in clusters){
+                fill = clusters[state];
+            } else {
+                let country_code =state.split("-")[0];
+                if(country_code in clusters){
+                    fill = clusters[country_code];
+                    used_info = country_code;
+                }
             }
-        }
-        svg.append("path")
-            .attr("fill", fill)
-            .attr("d", path(outlines[feature]));
 
+            svg.append("path")
+                .attr("fill", fill)
+                .attr("d", path(outlines[feature]))
+                .attr("location",state)
+                .data([data[used_info]])
+                .on('mouseover', display_tooltip);
       }
+    }
+
+    function display_tooltip(d,i){
+        let desc = document.getElementById("description");
+        if(d !== undefined)
+            desc.innerHTML = "<h3>"+d.language+"</h3>"+"<p> Pronunciation: "+d.pronunciation+"</p>";
     }
 
 

@@ -172,7 +172,8 @@
     "name": "Hmong Daw",
     "regions": ["LA"],
     "provider": "ms",
-    "accents": true
+    "accents": true,
+    "space-elimination": true
   },
   "nb": {
     "name": "Norwegian",
@@ -289,13 +290,15 @@
     "name": "Vietnam",
     "regions": ["VN"],
     "provider": "ms",
-    "accents": true
+    "accents": true,
+    "space-elimination": true
   },
   "zh-Hans": {
     "name": "Mandarin",
     "regions": ["CN", "TW"],
     "provider": "ms",
     "transliterate":"ms",
-    "accents": true
+    "accents": true,
+    "space-elimination": true
   }
 }

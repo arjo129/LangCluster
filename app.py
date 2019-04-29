@@ -3,12 +3,12 @@ from json import load, dumps
 from sklearn.cluster import DBSCAN
 from backends.microsoft_adapter import MSTranslationProvider
 from transliterate import translit
-from fuzzy import DMetaphone
 import cyrtranslit
 import unidecode
 import numpy as np
 
 app = Flask(__name__)
+
 
 class Configuration:
     def __init__(self):
@@ -44,6 +44,7 @@ config = Configuration()
 ms_languages = config.get_languages_by_backend("ms")
 MSBackend = MSTranslationProvider(ms_languages.keys(), lang_opts=ms_languages)
 
+
 def post_process(word, language):
     """
     Post Processing steps
@@ -66,6 +67,8 @@ def post_process(word, language):
         res = word.casefold().split("-")
         res = list(filter(lambda x: x not in ["al"], res))
         word = " ".join(res)
+    if language in config.get_languages_if_property_exists("space-elimination"):
+        word = "".join(word.split())
     return word
 
 
@@ -103,20 +106,6 @@ def get_levenshtein_distance(word1, word2):
     return matrix[len(word1)][len(word2)]
 
 
-
-def soundex_and_levenstein(word1, word2):
-    dmeta = DMetaphone()
-    sd1 = dmeta(word1)
-    sd2 = dmeta(word2)
-    dist = float('inf')
-    for i in sd1:
-        for j in sd2:
-            if i != None and j != None:
-                dist_meta = get_levenshtein_distance(i,j)
-                dist = min(dist_meta, dist)
-    #dist_lv = get_levenshtein_distance(word1, word2)
-    return dist
-
 def translate_all_backends(word):
     translations = MSBackend.get_translation(word)
     translations["en"] = word
@@ -125,9 +114,11 @@ def translate_all_backends(word):
         cleaned[language] = post_process(translations[language], language)
     return cleaned
 
+
 def proportional_edit_distance(word1, word2):
     ed = get_levenshtein_distance(word1, word2)
-    return 20*ed/(len(word1)+len(word2))
+    return 20*ed/(1e-9+len(word1)+len(word2))
+
 
 def generate_edit_matrix(word, distance_metric=proportional_edit_distance):
     translations = translate_all_backends(word)
@@ -155,15 +146,17 @@ def cluster_matrix(distance_matrix):
     for i in range(1, 7):
         dbscan = DBSCAN(eps=i, min_samples=2, metric="precomputed")
         res = dbscan.fit_predict(distance_matrix)
-        score = max(res) / len(list(filter(lambda x: x == -1, res)))
+        score = max(res) / (1+len(list(filter(lambda x: x == -1, res))))
         if  best_score  < score:
             best_score = score
             best_res = res
     return best_res
 
+
 @app.route('/static')
 def send_js(path):
     return send_from_directory('static', path)
+
 
 @app.route('/api/backend')
 def backend():

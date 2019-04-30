@@ -7,3 +7,5 @@ words with common pronunciation together.
 
 ## Adding languages
 Languages can be added by updating `language.json`.
+
+Try the system out live over [here](https://arjo129.github.io/LangCluster/static/).

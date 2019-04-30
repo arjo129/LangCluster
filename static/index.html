@@ -69,7 +69,7 @@
 
 
     function fetchRelevantData(word) {
-        let files = ["https://languageclustering.azurewebsites.net/api/clusterlanguages?code=LXY746kzeBa2XiIu1QasH/zaWTGvh10YrtGwTNv0wVhUotcqP88ScQ==&" + word, "map.json"];
+        let files = ["https://languageclustering.azurewebsites.net/api/clusterlanguages?code=LXY746kzeBa2XiIu1QasH/zaWTGvh10YrtGwTNv0wVhUotcqP88ScQ==&word=" + word, "map.json"];
 
         Promise.all(files.map(url => d3.json(url))).then(function (files) {
             window.onresize = handleResize;

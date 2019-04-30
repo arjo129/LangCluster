@@ -69,12 +69,12 @@
 
 
     function fetchRelevantData(word) {
-        let files = ["map.json","https://languageclustering.azurewebsites.net/api/clusterlanguages?code=LXY746kzeBa2XiIu1QasH/zaWTGvh10YrtGwTNv0wVhUotcqP88ScQ==&word=" + word];
+        let files = ["https://languageclustering.azurewebsites.net/api/clusterlanguages?code=LXY746kzeBa2XiIu1QasH/zaWTGvh10YrtGwTNv0wVhUotcqP88ScQ==&" + word, "map.json"];
 
         Promise.all(files.map(url => d3.json(url))).then(function (files) {
             window.onresize = handleResize;
-            data = files[1];
-            mapPath = files[0];
+            data = files[0];
+            mapPath = files[1];
             renderMap(data, mapPath);
         });
     }
@@ -89,8 +89,11 @@
             svg.attr("height",  window.innerHeight - margin);
             svg.attr("width", "auto");
         }
-        svg.selectAll("*").remove();
-        renderMap(data, mapPath);
+
+        if(mapPath != null && data != null) {
+            svg.selectAll("*").remove();
+            renderMap(data, mapPath);
+        }
     }
 
     function getPlatformProjection(){

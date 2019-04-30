@@ -1,16 +1,7 @@
 <!DOCTYPE html>
 <head>
     <meta charset="utf-8" />
-    <style>
-    .counties {
-      fill: none;
-    }
-    .states {
-      fill: none;
-      stroke: #fff;
-      stroke-linejoin: round;
-    }
-    </style>
+    <title>Langcluster</title>
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <script src="https://d3js.org/topojson.v2.min.js"></script>
     <script src="https://d3js.org/d3-array.v1.min.js"></script>
@@ -38,7 +29,7 @@
         <input type="text" name="word" value="Enter an english word"/>
         <input type="submit" value="Search">
     </form>
-    <p>Suggestions: Try the words <a href="index.html?word=tea">Tea</a>, <a href="index.html?word=king">King</a>
+    <p>Suggestions: Try the words <a href="index.html?word=tea">Tea</a>, <a href="index.html?word=lion">Lion</a>
         or <a href="index.html?word=cheese">Cheese</a> to see the similarities between what different cultures call them.
 </div>
 <script>
@@ -78,12 +69,12 @@
 
 
     function fetchRelevantData(word) {
-        let files = ["/api/backend?word=" + word, "map.json"];
+        let files = ["map.json","https://languageclustering.azurewebsites.net/api/clusterlanguages?code=LXY746kzeBa2XiIu1QasH/zaWTGvh10YrtGwTNv0wVhUotcqP88ScQ==&word=" + word];
 
         Promise.all(files.map(url => d3.json(url))).then(function (files) {
             window.onresize = handleResize;
-            data = files[0];
-            mapPath = files[1];
+            data = files[1];
+            mapPath = files[0];
             renderMap(data, mapPath);
         });
     }

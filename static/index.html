@@ -12,6 +12,31 @@
             font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
             line-height: 1.5;
         }
+
+        .loading:after {
+            content: ' .';
+            animation: dots 1s steps(5, end) infinite;
+        }
+
+        @keyframes dots {
+          0%, 20% {
+            color: rgba(0,0,0,0);
+            text-shadow:
+              .25em 0 0 rgba(0,0,0,0),
+              .5em 0 0 rgba(0,0,0,0);}
+          40% {
+            color: black;
+            text-shadow:
+              .25em 0 0 rgba(0,0,0,0),
+              .5em 0 0 rgba(0,0,0,0);}
+          60% {
+            text-shadow:
+              .25em 0 0 black,
+              .5em 0 0 rgba(0,0,0,0);}
+          80%, 100% {
+            text-shadow:
+              .25em 0 0 black,
+              .5em 0 0 black;}}
     </style>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
@@ -22,7 +47,8 @@
     <input type="submit" value="Submit">
 </form>
 <center>
-    <svg width="960" height="600"></svg>
+    <svg width="100%" height="100%">
+    </svg>
 </center>
 <div id="description" style="position: fixed; bottom:10px; left: 10px;">
 </div>
@@ -38,6 +64,12 @@
     <p>Suggestions: Try the words <a href="index.html?word=tea">Tea</a>, <a href="index.html?word=lion">Lion</a>
         or <a href="index.html?word=cheese">Cheese</a> to see the similarities between what different cultures call them.
 </div>
+
+<div id="loading_bar" style="position: fixed; top:48%; width: 100%; ">
+    <center><h1 class="loading">We promise this'll take less time than your windows update</h1></center>
+</div>
+
+
 <script>
     let data = null;
     let mapPath = null;
@@ -53,13 +85,13 @@
     } catch (e) {
         //No input for word. Give tutorial Instead
         document.getElementById("searchbar").style.visibility = "hidden";
+        document.getElementById("loading_bar").style.visibility = "hidden";
     }
 
 
     let svg = d3.select("svg");
     svg.attr("preserveAspectRatio", "xMinYMin meet");
     svg.attr("viewBox", "0 0 960 600");
-    handleResize();
 
     function getQueryVariable(variable) {
         let query = window.location.search.substring(1);
@@ -81,7 +113,9 @@
             window.onresize = handleResize;
             data = files[0];
             mapPath = files[1];
+            document.getElementById("loading_bar").style.visibility = "hidden";
             renderMap(data, mapPath);
+            handleResize();
         });
     }
 

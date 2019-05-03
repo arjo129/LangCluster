@@ -1,0 +1,304 @@
+{
+  "ar": {
+    "name": "Arabic",
+    "regions": ["SA","AE"],
+    "provider": "ms",
+    "transliterate":"ms",
+    "accents": true,
+    "stopwords-arabic": true
+  },
+  "bn": {
+    "name": "Bengali",
+    "regions": ["BD", "IN-WB", "IN-TR"],
+    "provider": "ms",
+    "transliterate":"ms",
+    "accents": true
+  },
+  "bs": {
+    "name": "Bosnian",
+    "regions": ["BA"],
+    "provider": "ms",
+    "accents": true
+  },
+  "cs": {
+    "name": "Czech",
+    "regions": ["CZ"],
+    "provider": "ms",
+    "accents": true
+  },
+  "da": {
+    "name": "Danish",
+    "regions": ["DK"],
+    "provider": "ms",
+    "stopwords": ["der", "das", "die"],
+    "accents": true
+  },
+  "de": {
+    "name": "German",
+    "regions": ["DE"],
+    "provider": "ms",
+    "stopwords": ["der", "das", "die"],
+    "accents": true
+  },
+  "el": {
+    "name": "Greek",
+    "regions": ["GR"],
+    "provider": "ms",
+    "transliterate":"trans"
+  },
+  "en": {
+    "name": "English",
+    "regions": ["GB"],
+    "provider": null
+  },
+  "es": {
+    "name": "Spanish",
+    "regions": ["ES"],
+    "provider": "ms",
+    "stopwords": ["el", "la"],
+    "accents": true
+  },
+  "et": {
+    "name": "Estonian",
+    "regions": ["EE"],
+    "provider": "ms",
+    "accents": true
+  },
+  "fi": {
+    "name": "Finnish",
+    "regions": ["FI"],
+    "provider": "ms",
+    "accents": true
+  },
+  "fil": {
+    "name": "Filipino",
+    "regions": ["PH"],
+    "provider": "ms",
+    "accents": true
+  },
+  "fj": {
+    "name": "Fijian",
+    "regions": ["FJ"],
+    "provider": "ms",
+    "accents": true
+  },
+  "fr": {
+    "name": "French",
+    "regions": ["FR"],
+    "provider": "ms",
+    "accents": true
+  },
+  "he": {
+    "name": "Hebrew",
+    "regions": ["IL"],
+    "provider": "ms",
+    "transliterate":"ms",
+    "accents": true
+  },
+  "hi": {
+    "name": "Hindi",
+    "regions": ["IN-UP", "IN-UT", "IN-RJ", "IN-HR", "IN-MP", "IN-DL","IN-CT","IN-BR"],
+    "provider": "ms",
+    "transliterate":"ms",
+    "accents": true
+  },
+  "hr": {
+    "name": "Croation",
+    "regions": ["HR"],
+    "provider": "ms",
+    "accents": true
+  },
+  "hu": {
+    "name": "Hungarian",
+    "regions": ["HU"],
+    "provider": "ms",
+    "accents": true
+  },
+  "id": {
+    "name": "Indonesian",
+    "regions": ["ID"],
+    "provider": "ms",
+    "accents": true
+  },
+  "is": {
+    "name": "Icelandic",
+    "regions": ["IS"],
+    "provider": "ms",
+    "accents": true
+  },
+  "it": {
+    "name": "Italian",
+    "regions": ["IT"],
+    "provider": "ms",
+    "accents": true
+  },
+  "ja":{
+    "name": "Japanese",
+    "regions": ["JP"],
+    "provider": "ms",
+    "transliterate":"ms"
+  },
+  "lt": {
+    "name": "Lithuanian",
+    "regions": ["LT"],
+    "provider": "ms",
+    "accents": true
+  },
+  "lv": {
+    "name": "Latvian",
+    "regions": ["LV"],
+    "provider": "ms",
+    "accents": true
+  },
+  "mg": {
+    "name": "Malagasy",
+    "regions": ["MG"],
+    "provider": "ms",
+    "accents": true
+  },
+  "ms": {
+    "name": "Malay",
+    "regions": ["MY"],
+    "provider": "ms",
+    "accents": true
+  },
+  "mt": {
+    "name": "Maltese",
+    "regions": ["MT"],
+    "provider": "ms",
+    "accents": true
+  },
+  "mww": {
+    "name": "Hmong Daw",
+    "regions": ["LA"],
+    "provider": "ms",
+    "accents": true,
+    "space-elimination": true
+  },
+  "nb": {
+    "name": "Norwegian",
+    "regions": ["NO"],
+    "provider": "ms",
+    "accents": true
+  },
+  "nl": {
+    "name": "Dutch",
+    "regions": ["NL"],
+    "provider": "ms",
+    "accents": true
+  },
+  "pl": {
+    "name": "Polish",
+    "regions": ["PL"],
+    "provider": "ms",
+    "accents": true
+  },
+  "pt": {
+    "name": "Portuguese",
+    "regions": ["PT"],
+    "provider": "ms",
+    "accents": true
+  },
+  "ro": {
+    "name": "Romanian",
+    "regions": ["RO"],
+    "provider": "ms",
+    "accents": true
+  },
+  "ru":{
+    "name": "Russian",
+    "regions": ["RU"],
+    "provider": "ms",
+    "transliterate":"cyr"
+  },
+  "sk": {
+    "name": "Slovak",
+    "regions": ["SK"],
+    "provider": "ms",
+    "accents": true
+  },
+  "sl": {
+    "name": "Slovenia",
+    "regions": ["SI"],
+    "provider": "ms",
+    "accents": true
+  },
+  "sm": {
+    "name": "Samoan",
+    "regions": ["WS"],
+    "provider": "ms",
+    "accents": true
+  },
+  "sr-Latn": {
+    "name": "Serbian",
+    "regions": ["RS"],
+    "provider": "ms",
+    "accents": true
+  },
+  "sv": {
+    "name": "Swedish",
+    "regions": ["SE"],
+    "provider": "ms",
+    "accents": true
+  },
+  "sw": {
+    "name": "Kiswahili",
+    "regions": ["TZ","KE","CD","RW","UG"],
+    "provider": "ms",
+    "accents": true
+  },
+  "ta": {
+    "name": "Tamil",
+    "regions": ["IN-TN"],
+    "provider": "ms",
+    "transliterate":"ms",
+    "accents": true
+  },
+  "te": {
+    "name": "Telegu",
+    "regions": [ "IN-TG", "IN-AP"],
+    "provider": "ms",
+    "transliterate":"ms",
+    "accents": true
+  },
+  "th": {
+    "name": "Thai",
+    "regions": ["TH"],
+    "provider": "ms",
+    "transliterate":"ms",
+    "accents": true
+  },
+  "to": {
+    "name": "Tongan",
+    "regions": ["TO"],
+    "provider": "ms",
+    "accents": true
+  },
+  "tr": {
+    "name": "Turkish",
+    "regions": ["TR"],
+    "provider": "ms",
+    "accents": true
+  },
+  "uk":{
+    "name": "Ukranian",
+    "regions": ["UA"],
+    "provider": "ms",
+    "transliterate":"trans"
+  },
+  "vi":{
+    "name": "Vietnam",
+    "regions": ["VN"],
+    "provider": "ms",
+    "accents": true,
+    "space-elimination": true
+  },
+  "zh-Hans": {
+    "name": "Mandarin",
+    "regions": ["CN", "TW"],
+    "provider": "ms",
+    "transliterate":"ms",
+    "accents": true,
+    "space-elimination": true
+  }
+}

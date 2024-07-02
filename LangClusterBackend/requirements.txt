@@ -7,5 +7,5 @@ scipy==1.2.1
 transliterate==1.10.2
 typing-extensions==3.7.2
 Unidecode==1.0.23
-urllib3==1.26.5
+urllib3==1.26.19
 
